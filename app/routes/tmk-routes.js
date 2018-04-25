@@ -1,8 +1,13 @@
+const parsingDeadline = new Date();
+
+// parsingDeadline.setMonth(parsingDeadline.getMonth() - 2);
+
+
 module.exports = function(app, db) {
   app.get('/tmks', (req, res) => {
     const num = parseInt(req.params.num, 10);
     // TODO Add date difference
-    db.collection('tmks').find({parsed: false}, (err, tmks) => {
+    db.collection('tmks').find({ $or: [{parsed: false}, {lastParsed: {$lte: parsingDeadline}}]}, (err, tmks) => {
       if (err) {
         res.send({'error': 'An error has occurred'});
       } else {
