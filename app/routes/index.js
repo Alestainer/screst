@@ -1,4 +1,4 @@
-const noteRoutes = require('./note_routes');
+const tmkRoutes = require('./tmk-routes');
 
 module.exports = function(app, db) {
   tmkRoutes(app,db);
