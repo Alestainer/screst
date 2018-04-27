@@ -1,5 +1,7 @@
 const parsingDeadline = new Date();
 
+const ObjectID = require('mongodb').ObjectID;
+
 // parsingDeadline.setMonth(parsingDeadline.getMonth() - 2);
 
 
@@ -22,14 +24,15 @@ module.exports = function(app, db) {
     });
   });
 
-  app.post('/tmks', (req, res) => {
-    const id = req.params.tmk;
-    const note = { lastParsed: new Date(), parsed: req.body.body };
-    db.collection('tmks').update({tmk: id}, note, {upsert: true}, (err) => {
+  app.post('/tmks/:id', (req, res) => {
+    const id = req.params.id;
+    const note = { lastParsed: new Date(), parsed: req.body.body};
+    const details = {'_id': new ObjectID(id)};
+    db.collection('tmks').update(details, note, {upsert: true}, (err) => {
       if (err) {
         res.send({'error': 'An error has occurred: ', err});
       } else {
-        console.log(`TMK ${id} is processed`);
+        res.send(`Object ${details._id} is processed`);
 	    }
     });
   });
