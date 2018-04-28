@@ -38,7 +38,7 @@ module.exports = function(app, db) {
   });
 
   app.post('/permits/:appnumber', (req, res) => {
-    const permit = { appNumber: req.params.appnumber, permit: req.body.body};
+    const permit = { appNumber: req.params.appnumber, permit: req.body};
     db.collection('permits').update({appNumber: permit.appNumber}, permit, {upsert: true}, (err, result) => {
       if (err) {
         res.send({ 'error': 'An error has occurred' });
