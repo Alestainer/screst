@@ -14,9 +14,9 @@ module.exports = function(app, db) {
       } else {
         tmks.limit(num).toArray((err, tmks) => {
           if (err) {
-            console.log(err);
+            res.send({error: err});
           } else {
-            res.send(tmks);
+            res.send({data: tmks});
           }
         });
       }
@@ -25,7 +25,6 @@ module.exports = function(app, db) {
 
   app.post('/tmks/:id', (req, res) => {
     const id = req.params.id;
-    console.log('Inside tmk POST');
     const note = {tmk: id, parsed: req.body.body, lastParsed: new Date() };
     // const details = {'_id': new ObjectID(id)};
     db.collection('tmks').update({tmk: id}, note, {upsert: true}, (err) => {
